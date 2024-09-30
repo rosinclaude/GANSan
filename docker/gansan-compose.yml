@@ -1,0 +1,40 @@
+version: '0.1'
+
+services:
+  pytorch-ray:
+    build:
+      context: .  # Use the current directory where the Dockerfile is located
+      dockerfile: gansan-dockerfile.yml
+    container_name: pytorch-ray-wb-mlflows-container
+    volumes:
+      - ./:/workspace  # Mount your code to the /workspace directory
+    working_dir: /workspace
+    environment:
+      - CUDA_VISIBLE_DEVICES=0  # Use GPU (optional, adjust as needed)
+      - RAY_REDIS_PASSWORD=5241590000000000
+    # ports:
+    #  - "8265:8265"  # Ray Dashboard (optional)
+    #  - "6379:6379"  # Redis port for Ray (required if distributing)
+    deploy:
+      resources:
+        limits:
+          memory: 4g  # Adjust memory limit as per your hardware
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['0']
+              capabilities: [gpu]
+
+    # command: python main.py  # Replace with the actual script you want to run
+    runtime: nvidia  # Use this if you need GPU support with nvidia-docker
+    networks:
+      - ml-network
+
+    stdin_open: true  # Keep stdin open for interactive shell
+    tty: true         # Allocate a pseudo-TTY for interactive shell
+    command: /bin/bash  # Start with an interactive shell
+
+networks:
+  ml-network:
+    driver: bridge
+
