@@ -1,0 +1,2 @@
+WANDB_API_KEY=
+MLFLOW_TRACKING_URI=file:///Storage/Data/Polytech/GANSan/MLflow/mlruns-gansan
