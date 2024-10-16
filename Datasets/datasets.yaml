@@ -1,0 +1,149 @@
+default_params:
+  # Adapt to docker path
+  Location: "/Storage/Data/GeneralDatasets/Csv/"
+  LabelName: "income"
+  PosOutcomes: [">50K", ">50K."]
+  GroupAttributes: ["sex"]
+  DefaultGroupValue: [['Male']]
+  ProtectedGroupValue: [['Female']]
+  NumericAsCategoric: 5
+  PreprocessingExcluded: null
+  PreprocessingIncluded: null
+  Scale: 0
+  epochs:
+    encoders: 900
+    c_models: 500
+    gan: 2000
+  schedulers_gamma:
+    encoders: 0.1
+    c_models: 0.1
+    gan: 0.2
+  weights:
+    reconstruction: 0.95
+    classification: 0.75
+  RecommendedEpochs: 450
+
+datasets:
+  Adult: &Adult
+    SetName: "AdultTotalCNoNan"
+    batch_size: 1024
+  Adult15K:
+    <<: *Adult
+    SetName: "AdultTotalCNoNan15K"
+  Adult30K:
+    SetName: "AdultTotalCNoNan30K"
+    batch_size: 1024
+  German:
+    SetName: "german_data_3_2_pr"
+    LabelName: "good_3_bad_2_customer"
+    PosOutcomes: [3]
+    GroupAttributes: ["Age_in_years"]
+    DefaultGroupValue: [[1]]
+    ProtectedGroupValue: [[0]]
+    batch_size: 128
+  Taiwan:
+    SetName: "default_of_credit_card_clients"
+    LabelName: "default_payment_next_month"
+    PosOutcomes: [0]
+    GroupAttributes: ["SEX"]
+    DefaultGroupValue: [[0]]
+    ProtectedGroupValue: [[1]]
+    batch_size: 128
+  Ricci:
+    SetName: "RicciData_2"
+    LabelName: "is_promoted"
+    PosOutcomes: [1.0]
+    GroupAttributes: ["Race"]
+    DefaultGroupValue: [[1]]
+    ProtectedGroupValue: [[0]]
+    batch_size: 128
+  Lipton:
+    SetName: "lipton"
+    LabelName: "Y"
+    PosOutcomes: [1.0]
+    GroupAttributes: ["gender"]
+    DefaultGroupValue: [[1]]
+    ProtectedGroupValue: [[0]]
+    batch_size: 128
+  Note:
+    SetName: "NoteData"
+    LabelName: "noteDec"
+    PosOutcomes: [1.0]
+    GroupAttributes: ["gender"]
+    DefaultGroupValue: [[1]]
+    ProtectedGroupValue: [[0]]
+    batch_size: 128
+  Note1:
+    SetName: "NoteData_1_of_3_common"
+  Note2:
+    SetName: "NoteData_2_of_3_common"
+  NoteNoDisc:
+    SetName: "NotesGroupTranslatedNoDisc"
+  NoteNoTransNoDisc:
+    SetName: "NotesNoGroupTranslationNoDisc"
+
+# CategoricalOrdinal uniform
+  CategoricalOrdinalUniform:
+    SetName: "CategoricalOrdinalUniform"
+    LabelName: "Decision"
+    PosOutcomes: [1]
+    GroupAttributes: ["Gender"]
+    DefaultGroupValue: [[1]]
+    ProtectedGroupValue: [[0]]
+
+  # Propublica Recidivism datasets
+  PropublicaRecidivism_Sex: &PropublicaRecidivism_Sex
+    SetName: "propublica-recidivism_categorical-binsensitive"
+    LabelName: "two_year_recid"
+    PosOutcomes: [1]
+    GroupAttributes: ["sex"]
+    DefaultGroupValue: [[1]]
+    ProtectedGroupValue: [[0]]
+
+  PropublicaRecidivismNoACNoSR_Sex:
+    SetName: "propublica-recidivism_categorical-binsensitive-no-age_cat_sex_race"
+    <<: *PropublicaRecidivism_Sex  # Reuse parameters from the previous dataset
+
+  PropublicaRecidivism_Race:
+    SetName: "propublica-recidivism_categorical-binsensitive"
+    LabelName: "two_year_recid"
+    PosOutcomes: [1]
+    GroupAttributes: ["race"]
+    DefaultGroupValue: [[1]]
+    ProtectedGroupValue: [[0]]
+
+  PropublicaRecidivism2:
+    SetName: "propublica-recidivism_categorical-binsensitive"
+    GroupAttributes: ["sex", "race"]
+    DefaultGroupValue: [[1], [1]]
+    ProtectedGroupValue: [[0], [0]]
+
+  # Compas Grouped dataset
+  CompasGrouped:
+    SetName: "compas_grouped"
+    LabelName: "two_year_recid"
+    PosOutcomes: ["Yes"]
+    GroupAttributes: ["race"]
+    DefaultGroupValue: [["Caucasian"]]
+    ProtectedGroupValue: [["African-American"]]
+
+  # Adult datasets with multiple sensitive attributes
+  Adult2:
+    <<: *Adult  # Reuse the original Adult config
+    SetName: "AdultTotalCNoNan"
+    GroupAttributes: ["sex", "race"]
+    DefaultGroupValue: [["Male"], ["White"]]
+    ProtectedGroupValue: [["Female"], ["Black", "Asian-Pac-Islander", "Amer-Indian-Eskimo", "Other"]]
+
+  Adult3:
+    <<: *Adult  # Reuse Adult2
+    GroupAttributes: ["sex", "race", "relationship"]
+    DefaultGroupValue: [["Male"], ["White"], ["Husband"]]
+    ProtectedGroupValue: [["Female"], ["Black", "Asian-Pac-Islander", "Amer-Indian-Eskimo", "Other"], ["Not-in-family", "Own-child", "Unmarried", "Wife", "Other-relative"]]
+
+  Adult5:
+    <<: *Adult  # Reuse Adult2
+    GroupAttributes: ["sex", "race", "marital-status", "relationship", "workclass"]
+    DefaultGroupValue: [["Male"], ["White"], ["Married-civ-spouse"], ["Husband"], ["Private"]]
+    ProtectedGroupValue: [["Female"], ["Black", "Asian-Pac-Islander", "Amer-Indian-Eskimo", "Other"], ["Divorced", "Widowed"], ["Not-in-family"], ["Self-emp-not-inc"]]
+
