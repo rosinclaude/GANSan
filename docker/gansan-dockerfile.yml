@@ -57,6 +57,8 @@ RUN pip install --upgrade pip \
   optuna \
   wandb \
   mlflow \
+  umap-learn \
+  seaborn \
   webdavclient3  # For webdav connections to the server ...
 
 # Expose Ray's default ports (for head node communication)

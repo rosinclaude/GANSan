@@ -1,13 +1,17 @@
-version: '0.1'
+version: '3.8'
 
 services:
-  pytorch-ray:
+  pytorch-ray-wb-mlflow:
     build:
       context: .  # Use the current directory where the Dockerfile is located
       dockerfile: gansan-dockerfile.yml
+    image: docker-pytorch-ray-wb-mlflow
     container_name: pytorch-ray-wb-mlflows-container
+    env_file:
+      - ./env
     volumes:
-      - ./:/workspace  # Mount your code to the /workspace directory
+      - /home/hun13r/Devel/Polytech/GANSan/:/workspace  # Mount your code to the /workspace directory
+      - /home/hun13r/Devel/Storage:/Storage
     working_dir: /workspace
     environment:
       - CUDA_VISIBLE_DEVICES=0  # Use GPU (optional, adjust as needed)
