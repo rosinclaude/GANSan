@@ -546,8 +546,8 @@ class Logs:
     """
     def __init__(self, wandb_init, mlflow_init):
         self.wandb = setup_wandb(**wandb_init)
-        if not args.debug:
-            self.mlflow = setup_mlflow(**mlflow_init)
+        # if not args.debug:
+        #     self.mlflow = setup_mlflow(**mlflow_init)
 
     def log_metrics(self, metrics_dictionary, step=None, save_directory=None, **to_save):
         """
@@ -562,9 +562,9 @@ class Logs:
         Returns:
 
         """
-        if not args.debug:
-            for m_name, m_value in metrics_dictionary.items():
-                mlflow.log_metric(m_name, m_value, step=step)
+        # if not args.debug:
+        #     for m_name, m_value in metrics_dictionary.items():
+        #         mlflow.log_metric(m_name, m_value, step=step)
 
         if step is not None:
             metrics_dictionary.update({"step": step})
@@ -1333,7 +1333,9 @@ def process(config, data_info, exp_folders, validation_index, test_index, decisi
                   # need to ensure that all workers will initialise wandb. Otherwise, they will return a RunDisable
                   # object, that can not be used.
                   mlflow_init=dict(config=config, experiment_name=exp_name, run_name=trial_id,
-                                   tracking_uri=os.environ['MLFLOW_TRACKING_URI']))
+                                   tracking_uri=os.environ['MLFLOW_TRACKING_URI'],
+                                   create_experiment_if_not_exists=is_testing_set))
+    # Default value for create_experiment_if_not_exists is False
     metrics_computation = MetricComputation(exp_folders, set_index, config["noise_dim"], train_prep, eval_data_prep,
                                             train_loader_in_a_single_batch, loader, train_target_mask,
                                             eval_data_target_mask, enc_dropped_cols, enc_group_names, to_drop,
