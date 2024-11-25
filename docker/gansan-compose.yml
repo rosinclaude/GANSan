@@ -10,12 +10,12 @@ services:
     env_file:
       - ./env
     volumes:
-      - /home/hun13r/Devel/Polytech/GANSan/:/workspace  # Mount your code to the /workspace directory
-      - /home/hun13r/Devel/Storage:/Storage
+      - /home/GANSan:/workspace  # Mount your code to the /workspace directory
+      - /home/Storage:/Storage
     working_dir: /workspace
     environment:
       - CUDA_VISIBLE_DEVICES=0  # Use GPU (optional, adjust as needed)
-      - RAY_REDIS_PASSWORD=5241590000000000
+      - RAY_REDIS_PASSWORD=0001  # Random values
     # ports:
     #  - "8265:8265"  # Ray Dashboard (optional)
     #  - "6379:6379"  # Redis port for Ray (required if distributing)
